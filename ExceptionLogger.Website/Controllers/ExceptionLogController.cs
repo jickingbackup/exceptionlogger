@@ -34,10 +34,7 @@ namespace ExceptionLogger.Website.Controllers
 
             foreach (var item in list)
             {
-                var i = new ExceptionLogViewModel();
-
-                i.CID = item.CID;
-                i.Id = item.Id.ToString();
+                var i = ViewModelFactory.MapToExceptionLogVM(item);
 
                 result.Add(i);
             }
@@ -70,7 +67,7 @@ namespace ExceptionLogger.Website.Controllers
         }
 
         // DELETE api/values/5
-        public void Delete(int id)
+        public void Delete([FromBody]int id)
         {
         }
     }
