@@ -31,16 +31,17 @@
             <section class="col-md-12" ng-repeat = "item in results">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <h3 class="panel-title">{{item.Id}}</h3>
+                        <h3 class="panel-title">{{item.id}}</h3>
                     </div>
                     <div class="panel-body">
-                        Panel content
+                        {{item.exception}}
                     </div>
-                    <div class="panel-footer text-right">
-                        <div class="btn-group btn-group-xs" role="group" aria-label="...">
-                            <button type="button" class="btn btn-sm btn-default">Details</button>
-                            <button type="button" class="btn btn-sm btn-default">Edit</button>
-                            <button type="button" class="btn btn-sm btn-default">Delete</button>
+                    <div class="panel-footer ">
+                        <div class="btn-group btn-group-xs text-right" role="group" aria-label="...">
+                            @*<button type="button" class="btn btn-sm btn-default" data-toggle="modal" data-target="#mini-modal" ng-click="Notify('xxx')">Notify</button>*@
+                            <button type="button" class="btn btn-sm btn-default" data-toggle="modal" data-target="#mini-modal" ng-click="Select(item.id)">Details</button>
+                            <button type="button" class="btn btn-sm btn-default" data-toggle="modal" data-target="#mini-modal" ng-click="Select(item.id)">Edit</button>
+                            <button type="button" class="btn btn-sm btn-default" data-toggle="modal" data-target="#mini-modal" ng-click="Select(item.id)">Delete</button>
                         </div>
                     </div>
                 </div>
@@ -53,6 +54,24 @@
         <div class="row">
             <hr />
             <p class="text-center"> XXX APPS </p>
+        </div>
+        @* MODALS / TEMPLATES *@
+        <div id="mini-modal" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">{{selectedExceptionLog.id}}</h4>
+                    </div>
+                    <div class="modal-body">
+                        {{selectedExceptionLog.exception}}
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Save changes</button>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
