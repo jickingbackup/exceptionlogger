@@ -53,7 +53,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Abstracts\IController.cs" />
-    <Compile Include="Class1.cs" />
     <Compile Include="Controllers\ExceptionLogController.cs" />
     <Compile Include="Factories\ControllerFactory.cs" />
     <Compile Include="Models\ExceptionLog.cs" />

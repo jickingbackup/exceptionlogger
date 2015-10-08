@@ -16,11 +16,23 @@ namespace ExceptionLogger.Core.Controllers
         private IMongoDatabase database = null;
         private IMongoCollection<ExceptionLog> collection = null;
 
-        public ExceptionLogController()
+        public ExceptionLogController(string connectionString)
         {
-            client = new MongoClient("mongodb://localhost:27017");
+            client = new MongoClient(connectionString); //("mongodb://localhost:27017");
             database = client.GetDatabase("exceptionlogsdb");
             collection = database.GetCollection<ExceptionLog>("exceptionlogs");
+
+            //seed
+            if(collection.CountAsync(new BsonDocument()).Result== 0)
+            {
+                this.Add(new ExceptionLog() { Browser = "Firefox", Date = DateTime.Now, CID = "254533", Exception = "BENJIE GAY was detected on code.", IP = "neverhost", Is404Error = false, Referer = "http://google.porn", Server = "megatron", StackTrace = "im sooo lost.", URL = "http://google.porn/benjie" });
+                this.Add(new ExceptionLog() { Browser = "Chrome", Date = DateTime.Now.AddDays(1), CID = "334569", Exception = "CHARLES GAY was detected on code.", IP = "neverhost", Is404Error = false, Referer = "http://google.porn", Server = "PHILOPHP", StackTrace = "im sooo lost.", URL = "http://google.porn/CHARLES" });
+                this.Add(new ExceptionLog() { Browser = "IE", Date = DateTime.Now.AddDays(2), CID = "66666", Exception = "PHILO GAY was detected on code.", IP = "neverhost", Is404Error = false, Referer = "http://google.porn", Server = "OPTIMUS", StackTrace = "im sooo lost.", URL = "http://google.porn/PHILO" });
+
+                this.Add(new ExceptionLog() { Browser = "Firefox", Date = DateTime.Now, CID = "254533", Exception = "Pubic hair was not foud.", IP = "neverhost", Is404Error = true, Referer = "http://google.porn", Server = "megatron", StackTrace = "im sooo lost.", URL = "http://google.porn/benjie" });
+                this.Add(new ExceptionLog() { Browser = "Chrome", Date = DateTime.Now.AddDays(1), CID = "334569", Exception = "Condom was not foud.", IP = "neverhost", Is404Error = true, Referer = "http://google.porn", Server = "PHILOPHP", StackTrace = "im sooo lost.", URL = "http://google.porn/CHARLES" });
+                this.Add(new ExceptionLog() { Browser = "IE", Date = DateTime.Now.AddDays(2), CID = "66666", Exception = "Heart was not foud.", IP = "neverhost", Is404Error = true, Referer = "http://google.porn", Server = "OPTIMUS", StackTrace = "im sooo lost.", URL = "http://google.porn/PHILO" });
+            }
         }
 
         //READ

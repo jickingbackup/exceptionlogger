@@ -9,7 +9,10 @@ var searchController = function SearchController($scope, exceptionLogsService) {
     $scope.maxdate = Date.now();
 
     $scope.Search = function () {
-        $scope.results = exceptionLogsService.GetAll();
+        //$scope.results = exceptionLogsService.GetAll();
+        exceptionLogsService.GetAll(function (data) {
+            $scope.results = data.data;
+        });
     }
 
     $scope.Select = function (id) {

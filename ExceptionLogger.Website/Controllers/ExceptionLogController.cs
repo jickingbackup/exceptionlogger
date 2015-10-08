@@ -11,6 +11,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.Http;
 
 namespace ExceptionLogger.Website.Controllers
@@ -29,8 +30,63 @@ namespace ExceptionLogger.Website.Controllers
         // GET api/values
         public IEnumerable<ExceptionLogViewModel> Get()
         {
-            var list = controller.Get();
+            var list = controller.Get().ToList();
+            //var filteredList = new List<ExceptionLog>();
             List<ExceptionLogViewModel> result = new List<ExceptionLogViewModel>();
+
+            #region FILTERS
+            //DATE
+            if (HttpContext.Current.Request.QueryString["date"] != null)
+            {
+                DateTime date = DateTime.Now;
+                DateTime.TryParse(HttpContext.Current.Request.QueryString["date"].ToString(), out date);
+                list = list.Where(x => 
+                        x.Date.ToShortDateString() == date.ToShortDateString()
+                    ).ToList();
+            }
+            //MIN DATE
+            if (HttpContext.Current.Request.QueryString["date"] == null && HttpContext.Current.Request.QueryString["mindate"] != null)
+            {
+
+            }
+            //MAXDATE
+            if (HttpContext.Current.Request.QueryString["date"] == null && HttpContext.Current.Request.QueryString["maxdate"] != null)
+            {
+
+            }
+            //ERROR FILTER
+            if (HttpContext.Current.Request.QueryString["error"] != null)
+            {
+                if (HttpContext.Current.Request.QueryString["error"] == "404")
+                {
+                    list = list.Where(x =>
+                            x.Is404Error == true
+                        ).ToList();
+                }
+                else
+                {
+                    list = list.Where(x =>
+                            x.Is404Error == false
+                        ).ToList();
+                }
+            }
+            //keyword
+            if (HttpContext.Current.Request.QueryString["keyword"] != null)
+            {
+                string keyword = HttpContext.Current.Request.QueryString["keyword"];
+                list = list.Where(x =>
+                        x.URL.ToLower().Contains(keyword)
+                        || x.StackTrace.ToLower().Contains(keyword)
+                        || x.Server.ToLower().Contains(keyword)
+                        || x.Referer.ToLower().Contains(keyword)
+                        || x.IP.ToLower().Contains(keyword)
+                        || x.Exception.ToLower().Contains(keyword)
+                        || x.CID.ToLower().Contains(keyword)
+                        || x.Browser.ToLower().Contains(keyword)
+                    ).ToList();
+            }
+            #endregion
+
 
             foreach (var item in list)
             {

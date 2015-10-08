@@ -11,9 +11,12 @@ namespace ExceptionLogger.Core.Factories
 {
     public class ControllerFactory
     {
+        //TODO: FETCH FROM APP CONFIG
+        static string connectionString = "mongodb://localhost:27017";
+
         public static IController<ExceptionLog> CreateExceptionLogController()
         {
-            return new ExceptionLogController();
+            return new ExceptionLogController(connectionString);
         }
     }
 }

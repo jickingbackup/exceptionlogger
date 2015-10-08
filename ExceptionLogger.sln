@@ -5,8 +5,6 @@ VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExceptionLogger.Website", "ExceptionLogger.Website\ExceptionLogger.Website.csproj", "{65E0D349-B601-4397-9808-7F0764F1C0D1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExceptionLogger.ConsoleApplication", "ExceptionLogger.ConsoleApplication\ExceptionLogger.ConsoleApplication.csproj", "{AF779249-B3C5-4155-AADF-F596EDD09255}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExceptionLogger.Core", "ExceptionLogger.Core\ExceptionLogger.Core.csproj", "{BA65E4F3-F814-4BF9-B480-D703C9D9C7A9}"
 EndProject
 Global
@@ -19,10 +17,6 @@ Global
 		{65E0D349-B601-4397-9808-7F0764F1C0D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{65E0D349-B601-4397-9808-7F0764F1C0D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{65E0D349-B601-4397-9808-7F0764F1C0D1}.Release|Any CPU.Build.0 = Release|Any CPU
-		{AF779249-B3C5-4155-AADF-F596EDD09255}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AF779249-B3C5-4155-AADF-F596EDD09255}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AF779249-B3C5-4155-AADF-F596EDD09255}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AF779249-B3C5-4155-AADF-F596EDD09255}.Release|Any CPU.Build.0 = Release|Any CPU
 		{BA65E4F3-F814-4BF9-B480-D703C9D9C7A9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{BA65E4F3-F814-4BF9-B480-D703C9D9C7A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BA65E4F3-F814-4BF9-B480-D703C9D9C7A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
