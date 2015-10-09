@@ -7,7 +7,10 @@ using System.Web;
 
 namespace ExceptionLogger.Website.Models
 {
-    public class ExceptionLogViewModel
+    /// <summary>
+    /// DATA TRANSPORT OBJECT for ExceptionLog
+    /// </summary>
+    public class ExceptionLogDTO
     {
 
         public string Id { set; get; }

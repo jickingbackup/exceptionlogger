@@ -9,9 +9,9 @@ namespace ExceptionLogger.Website.Factories
 {
     public class ViewModelFactory
     {
-        public static ExceptionLogViewModel MapToExceptionLogVM(ExceptionLog log)
+        public static ExceptionLogDTO MapToExceptionLogVM(ExceptionLog log)
         {
-            var vm = new ExceptionLogViewModel();
+            var vm = new ExceptionLogDTO();
 
             vm.CID = log.CID;
             vm.Id = log.Id.ToString();
