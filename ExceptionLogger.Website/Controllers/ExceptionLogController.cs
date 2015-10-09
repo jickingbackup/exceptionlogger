@@ -113,18 +113,47 @@ namespace ExceptionLogger.Website.Controllers
         }
 
         // POST api/values
-        public void Post([FromBody]string value)
+        public HttpResponseMessage Post([FromBody]ExceptionLogViewModel exception)
         {
+            try
+            {
+                ExceptionLog log = new ExceptionLog();
+                log.Date = DateTime.Now;
+                log.Browser = exception.Browser;
+                log.CID = exception.Browser;
+                log.Exception = exception.Exception;
+                log.IP = exception.IP;
+                log.Is404Error = exception.Is404Error;
+                log.Referer = exception.Referer;
+                log.Server = exception.Server;
+                log.StackTrace = exception.StackTrace;
+                log.URL = exception.URL;
+                controller.Add(log);
+
+                exception.Id = log.Id.ToString();
+
+                var response = this.Request.CreateResponse<ExceptionLogViewModel>(HttpStatusCode.Created, exception);
+                string uri = String.Format("{0}{1}/api/ExceptionLog/{2}", HttpContext.Current.Request.Url.Scheme + Uri.SchemeDelimiter , HttpContext.Current.Request.Url.Host, exception.Id);
+                response.Headers.Location = new Uri(uri);
+                return response;
+
+            }
+            catch (Exception)
+            {
+                throw new HttpResponseException(HttpStatusCode.InternalServerError);
+            }
         }
 
-        // PUT api/values/5
-        public void Put(int id, [FromBody]string value)
-        {
-        }
+        //// PUT api/values/5
+        //public void Put(int id, [FromBody]string value)
+        //{
+        //}
 
-        // DELETE api/values/5
-        public void Delete([FromBody]int id)
-        {
-        }
+        //// DELETE api/values/5
+        //public void Delete([FromBody]int id)
+        //{
+        //}
+
+
     }
 }
