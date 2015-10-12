@@ -162,7 +162,7 @@ namespace ExceptionLogger.Website.Controllers
 
                 //SEND SIGNALR CLIENTS
                 var hubContext = GlobalHost.ConnectionManager.GetHubContext<NotificationHub>();
-                hubContext.Clients.All.hello();
+                hubContext.Clients.All.NotifyClients();
 
                 var response = this.Request.CreateResponse<ExceptionLogDTO>(HttpStatusCode.Created, exception);
                 string uri = String.Format("{0}{1}/api/ExceptionLog/{2}", HttpContext.Current.Request.Url.Scheme + Uri.SchemeDelimiter , HttpContext.Current.Request.Url.Host, exception.Id);

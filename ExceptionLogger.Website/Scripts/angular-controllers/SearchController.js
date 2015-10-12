@@ -37,7 +37,7 @@ var searchController = function SearchController($scope, exceptionLogsService) {
             Notification.requestPermission();
         else {
             var notification = new Notification('Notification title', {
-                icon: 'http://cdn.sstatic.net/stackexchange/img/logos/so/so-icon.png',
+                icon: 'http://ibcjapan.co.jp/Images/slides/prelog/slide4/ibchd.png',
                 body: "Hey there! You've been notified!",
             });
 
