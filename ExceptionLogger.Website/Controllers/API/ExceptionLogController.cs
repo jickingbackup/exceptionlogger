@@ -2,7 +2,9 @@
 using ExceptionLogger.Core.Factories;
 using ExceptionLogger.Core.Models;
 using ExceptionLogger.Website.Factories;
+using ExceptionLogger.Website.Hubs;
 using ExceptionLogger.Website.Models;
+using Microsoft.AspNet.SignalR;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using System;
@@ -157,14 +159,15 @@ namespace ExceptionLogger.Website.Controllers
                 //add to db
                 controller.Add(log);
                 exception.Id = log.Id.ToString();
-                
-                //TODO: SEND SIGNALR CLIENTS
+
+                //SEND SIGNALR CLIENTS
+                var hubContext = GlobalHost.ConnectionManager.GetHubContext<NotificationHub>();
+                hubContext.Clients.All.hello();
 
                 var response = this.Request.CreateResponse<ExceptionLogDTO>(HttpStatusCode.Created, exception);
                 string uri = String.Format("{0}{1}/api/ExceptionLog/{2}", HttpContext.Current.Request.Url.Scheme + Uri.SchemeDelimiter , HttpContext.Current.Request.Url.Host, exception.Id);
                 response.Headers.Location = new Uri(uri);
                 return response;
-
             }
             catch (Exception)
             {

@@ -8,11 +8,19 @@ var searchController = function SearchController($scope, exceptionLogsService) {
     $scope.mindate = Date.now();
     $scope.maxdate = Date.now();
 
+    // Declare a proxy to reference the hub.
+    $scope.hub = null;
+
     $scope.Search = function () {
         //$scope.results = exceptionLogsService.GetAll();
         exceptionLogsService.GetAll(function (data) {
+            //if(data) //TODO:CHECK IF DATA IS 200
+
             $scope.results = data.data;
         });
+
+        //TEST SIGNALR
+        $scope.hub.server.notifyClients();
     }
 
     $scope.Select = function (id) {
@@ -33,22 +41,27 @@ var searchController = function SearchController($scope, exceptionLogsService) {
                 body: "Hey there! You've been notified!",
             });
 
-            if (message !== null)
-                notification.body = message;
-
-
             notification.onclick = function () {
                 window.open("http://stackoverflow.com/a/13328397/1269037");
             };
         }
     }
 
+    //SET UP SIGNALR HERE.
     $scope.Initialize = function () {
-        $scope.Search();
+        // Declare a proxy to reference the hub.
+        $scope.hub = $.connection.notificationHub;
 
-        //window.setInterval(function () {
-        //    $scope.Notify();
-        //}, 1000);
+        // Create a function that the hub can call to broadcast messages.
+        $scope.hub.client.notifyClients = function () {
+            $scope.Notify();
+        };
+
+        // Start the connection.
+        $.connection.hub.start(function () {
+            $scope.Search();
+        });
+
     }
 
     //call initializer
