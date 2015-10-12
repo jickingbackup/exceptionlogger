@@ -12,5 +12,10 @@ namespace ExceptionLogger.Website.Hubs
         {
             Clients.All.notifyClients();
         }
+
+        public void NotifyAllClients(string title,string message,string url)
+        {
+            Clients.All.notifyAllClients(title,message,url);
+        }
     }
 }

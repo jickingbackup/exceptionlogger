@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
 
-namespace ExceptionLogger.Website.Controllers
+namespace ExceptionLogger.Website.Controllers.API
 {
     [RoutePrefix("api/[controller]")]
     public class ExceptionLogController : ApiController
@@ -142,8 +142,10 @@ namespace ExceptionLogger.Website.Controllers
             try
             {
                 ExceptionLog log = new ExceptionLog();
+                HttpResponseMessage response = null;
+                string uri = "";
 
-                if(exception == null)
+                if (exception == null)
                     return this.Request.CreateResponse(HttpStatusCode.BadRequest);
 
                 log.Date = DateTime.Now;
@@ -161,11 +163,11 @@ namespace ExceptionLogger.Website.Controllers
                 exception.Id = log.Id.ToString();
 
                 //SEND SIGNALR CLIENTS
-                var hubContext = GlobalHost.ConnectionManager.GetHubContext<NotificationHub>();
-                hubContext.Clients.All.NotifyClients();
+                this.SendSignalRClients(log);
 
-                var response = this.Request.CreateResponse<ExceptionLogDTO>(HttpStatusCode.Created, exception);
-                string uri = String.Format("{0}{1}/api/ExceptionLog/{2}", HttpContext.Current.Request.Url.Scheme + Uri.SchemeDelimiter , HttpContext.Current.Request.Url.Host, exception.Id);
+                //prepare response
+                response = this.Request.CreateResponse<ExceptionLogDTO>(HttpStatusCode.Created, exception);
+                uri = this.GenerateObjectURL(exception.Id);
                 response.Headers.Location = new Uri(uri);
                 return response;
             }
@@ -173,6 +175,27 @@ namespace ExceptionLogger.Website.Controllers
             {
                 throw new HttpResponseException(HttpStatusCode.InternalServerError);
             }
+        }
+
+        //FORMAT MESSAGE HERE
+        private void SendSignalRClients(ExceptionLog log)
+        {
+            var hubContext = GlobalHost.ConnectionManager.GetHubContext<NotificationHub>();
+
+            hubContext.Clients.All.NotifyAllClients(
+                (log.Is404Error ? "IBC 404-" : "IBC 500-") + log.URL,
+                log.Exception,
+                this.GenerateObjectURL(log.Id.ToString()));
+        }
+
+        private string GenerateObjectURL(string id)
+        {
+            if(HttpContext.Current.Request.Url.Port != 80)
+            {
+                return String.Format("{0}{1}/api/ExceptionLog/{2}", HttpContext.Current.Request.Url.Scheme + Uri.SchemeDelimiter, HttpContext.Current.Request.Url.Host + Uri.SchemeDelimiter + HttpContext.Current.Request.Url.Port, id);
+            }
+            return String.Format("{0}{1}/api/ExceptionLog/{2}", HttpContext.Current.Request.Url.Scheme + Uri.SchemeDelimiter, HttpContext.Current.Request.Url.Host, id);
+
         }
     }
 }

@@ -18,16 +18,13 @@ var searchController = function SearchController($scope, exceptionLogsService) {
 
             $scope.results = data.data;
         });
-
-        //TEST SIGNALR
-        $scope.hub.server.notifyClients();
     }
 
     $scope.Select = function (id) {
         $scope.selectedExceptionLog = exceptionLogsService.GetByID(id);
     }
 
-    $scope.Notify = function (message) {
+    $scope.Notify = function (title,message,url) {
         if (!Notification) {
             alert('Desktop notifications not available in your browser. Try Chromium.');
             return;
@@ -36,13 +33,23 @@ var searchController = function SearchController($scope, exceptionLogsService) {
         if (Notification.permission !== "granted")
             Notification.requestPermission();
         else {
-            var notification = new Notification('Notification title', {
+            if (title === null || title === undefined) {
+                title = 'no title.';
+            }
+            if (message === null || message === undefined) {
+                message = 'no message.';
+            }
+            if (url === null || url === undefined) {
+                url = 'http://google.com';
+            }
+
+            var notification = new Notification(title, {
                 icon: 'http://ibcjapan.co.jp/Images/slides/prelog/slide4/ibchd.png',
-                body: "Hey there! You've been notified!",
+                body: message
             });
 
             notification.onclick = function () {
-                window.open("http://stackoverflow.com/a/13328397/1269037");
+                window.open(url);
             };
         }
     }
@@ -55,6 +62,11 @@ var searchController = function SearchController($scope, exceptionLogsService) {
         // Create a function that the hub can call to broadcast messages.
         $scope.hub.client.notifyClients = function () {
             $scope.Notify();
+        };
+
+        //notifyAllClients
+        $scope.hub.client.notifyAllClients = function (title,message,url) {
+            $scope.Notify(title, message, url);
         };
 
         // Start the connection.
